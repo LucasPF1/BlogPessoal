@@ -62,12 +62,12 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\lucas\Desktop\ConquerDaring"/>
 			<item value="C:\Users\lucas\Desktop\blogPessoal\farmacia"/>
 			<item value="C:\Users\lucas\Desktop\blogPessoal\Farmacia"/>
 			<item value="C:\Users\lucas\Desktop\blogPessoal\lojaGames"/>
 			<item value="C:\Users\lucas\Desktop\lojaGames"/>
 			<item value="C:\Users\lucas\Desktop\lojasGames"/>
-			<item value="C:\Users\lucas\Desktop\ConquerDaring"/>
 			<item value="C:\Users\lucas\Desktop\blogPessoal"/>
 		</list>
 		<list key="projectNameTemplate">
