@@ -3,6 +3,7 @@
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
 			<item value="C:\Users\lucas\Desktop\BlogPessoal"/>
+			<item value="C:\Users\lucas\Desktop\Daring_projeto"/>
 			<item value="C:\Users\lucas\Desktop\ConquerDaring"/>
 		</list>
 		<list key="projectNameTemplate">
@@ -13,5 +14,9 @@
 			<item value="[groupId].[artifactId]-[version]"/>
 			<item value="[name]"/>
 		</list>
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.dependencies">
 	</section>
 </section>
