@@ -6,20 +6,19 @@ import org.generation.blogPessoal.model.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserDetailsImpl implements UserDetails {
-
-	public static final long serialVersionUID = 1L;
-
-	private String userName;
-	private String password;
-
-	public UserDetailsImpl(Usuario user) {
-		this.userName = user.getUsuario();
-		this.password = user.getSenha();
-	}
-
-	public UserDetailsImpl() {
-	}
+public class UserDetailsImpl implements UserDetails{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private String userName; 
+	private String password; 
+	
+	public UserDetailsImpl(Usuario user) { 
+		this.userName = user.getUsuario(); 
+		this.password = user.getSenha(); 
+		} 
+	
+	public UserDetailsImpl() {} 
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -62,5 +61,4 @@ public class UserDetailsImpl implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
 }

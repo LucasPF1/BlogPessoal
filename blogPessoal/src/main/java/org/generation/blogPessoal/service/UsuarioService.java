@@ -1,98 +1,51 @@
 package org.generation.blogPessoal.service;
 
 import java.nio.charset.Charset;
-import java.time.LocalDate;
-import java.time.Period;
 
-import java.util.List;
 import java.util.Optional;
+
 import org.apache.commons.codec.binary.Base64;
+import org.generation.blogPessoal.model.UserLogin;
 import org.generation.blogPessoal.model.Usuario;
-import org.generation.blogPessoal.model.UsuarioLogin;
 import org.generation.blogPessoal.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UsuarioService {
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioRepository repository;
 
-	public List<Usuario> listarUsuarios() {
-
-		return usuarioRepository.findAll();
-
-	}
-
-	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
-
-		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O Usuário já existe!", null);
-
-		int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
-
-		if (idade < 18)
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O Usuário é menor de idade!", null);
-
+	public Usuario CadastrarUsuario(Usuario usuario) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 		String senhaEncoder = encoder.encode(usuario.getSenha());
 		usuario.setSenha(senhaEncoder);
 
-		return Optional.of(usuarioRepository.save(usuario));
-
+		return repository.save(usuario);
 	}
 
-	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
-
-		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
-
-			int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
-
-			if (idade < 18)
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O Usuário é menor de idade!", null);
-
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-			String senhaEncoder = encoder.encode(usuario.getSenha());
-			usuario.setSenha(senhaEncoder);
-
-			return Optional.of(usuarioRepository.save(usuario));
-
-		} else {
-
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);
-
-		}
-	}
-
-	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
-
+	public Optional<UserLogin> Logar(Optional<UserLogin> user) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
+		Optional<Usuario> usuario = repository.findByUsuario(user.get().getUsuario());
 
 		if (usuario.isPresent()) {
-			if (encoder.matches(usuarioLogin.get().getSenha(), usuario.get().getSenha())) {
+			if (encoder.matches(user.get().getSenha(), usuario.get().getSenha())) {
 
-				String auth = usuarioLogin.get().getUsuario() + ":" + usuarioLogin.get().getSenha();
+				String auth = user.get().getUsuario() + ":" + user.get().getSenha();
 				byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
 				String authHeader = "Basic " + new String(encodedAuth);
 
-				usuarioLogin.get().setId(usuario.get().getId());
-				usuarioLogin.get().setNome(usuario.get().getNome());
-				usuarioLogin.get().setSenha(usuario.get().getSenha());
-				usuarioLogin.get().setToken(authHeader);
-
-				return usuarioLogin;
-
+				user.get().setToken(authHeader);
+				user.get().setNome(usuario.get().getNome());
+				user.get().setFoto(usuario.get().getFoto());
+				user.get().setTipo(usuario.get().getTipo());
+				
+				return user;
 			}
 		}
-
-		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "O Usuário ou Senha Inválidos!", null);
+		return null;
 	}
-
 }

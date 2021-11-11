@@ -1,5 +1,4 @@
 package org.generation.blogPessoal.model;
-
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -18,28 +17,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "tb_postagem")
 public class Postagem {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
+	
 	@NotNull
-	@Size(min = 5, max = 100)
+	@Size(min = 5, max = 100, message = "O atributo titulo é obrigatório, deve conter no minimo 05 e no maximo 100 caracteres")
 	private String titulo;
-
+	
 	@NotNull
-	@Size(min = 10, max = 500)
+	@Size(min = 5, max = 500, message = "O atributo texto é obrigatório, deve conter no minimo 05 e no maximo 100 caracteres")
 	private String texto;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date = new java.sql.Date(System.currentTimeMillis());
-
+	
 	@ManyToOne
 	@JsonIgnoreProperties("postagem")
 	private Tema tema;
-
+	
 	@ManyToOne
-	@JsonIgnoreProperties("postagem")
+	@JsonIgnoreProperties("usuario")
 	private Usuario usuario;
 
 	public long getId() {
@@ -73,7 +72,7 @@ public class Postagem {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
+	
 	public Tema getTema() {
 		return tema;
 	}
@@ -81,13 +80,5 @@ public class Postagem {
 	public void setTema(Tema tema) {
 		this.tema = tema;
 	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
+	
 }
